@@ -12,20 +12,23 @@ module.exports = function(config) {
     if (!config.minimum_confidence) {
         config.minimum_confidence = 0.5;
     }
-    if (!config.skip_bot) {
-        config.skip_bot = false;
+    if(!config.skip_bot){
+      config.skip_bot = false;
+    }
+
+    if (!config.sessionId) {
+        config.sessionId = uuid.v1();
     }
 
     var middleware = {};
-    var sessionId = uuid.v1();
-
+    
     middleware.receive = function(bot, message, next) {
-        if(config.skip_bot === true && message.bot_id !== undefined){
+        if(config.skip_bot === true && message.bot_id !== undefined) {
           next()
         }
         else if (message.text) {
             request = apiai.textRequest(message.text, {
-                sessionId: sessionId
+                sessionId: config.sessionId
             });
 
             request.on('response', function(response) {
