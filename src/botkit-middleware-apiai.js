@@ -13,7 +13,7 @@ module.exports = function(config) {
         config.minimum_confidence = 0.5;
     }
     if(!config.skip_bot){
-      config.skip_bot = false;
+        config.skip_bot = false;
     }
 
     var middleware = {},
@@ -26,7 +26,7 @@ module.exports = function(config) {
         else if (message.text) {
             var channel = message.channel;
 
-            if ( !(channel in sessionIds) ) {
+            if (!(channel in sessionIds)){
                 sessionIds[channel] = uuid.v1();
             }
 
