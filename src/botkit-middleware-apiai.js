@@ -16,19 +16,22 @@ module.exports = function(config) {
       config.skip_bot = false;
     }
 
-    if (!config.sessionId) {
-        config.sessionId = uuid.v1();
-    }
+    var middleware = {},
+        sessionIds = {};
 
-    var middleware = {};
-    
     middleware.receive = function(bot, message, next) {
         if(config.skip_bot === true && message.bot_id !== undefined) {
           next()
         }
         else if (message.text) {
+            var channel = message.channel;
+
+            if ( !(channel in sessionIds) ) {
+                sessionIds[channel] = uuid.v1();
+            }
+
             request = apiai.textRequest(message.text, {
-                sessionId: config.sessionId
+                sessionId: sessionIds[channel]
             });
 
             request.on('response', function(response) {
