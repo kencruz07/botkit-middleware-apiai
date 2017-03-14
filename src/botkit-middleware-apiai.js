@@ -23,7 +23,7 @@ module.exports = function(config) {
 
     middleware.receive = function(bot, message, next) {
         if (config.skip_bot === true && message.bot_id !== undefined) {
-          next();
+            next();
         }
         else if (message.text) {
             var channel = message.channel;
