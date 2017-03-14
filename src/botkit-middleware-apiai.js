@@ -5,14 +5,16 @@ module.exports = function(config) {
 
     if (!config.token) {
         throw new Error('No api.ai token provided.');
-    } else {
+    }
+    else {
         var apiai = apiaiService(config.token);
     }
 
     if (!config.minimum_confidence) {
         config.minimum_confidence = 0.5;
     }
-    if(!config.skip_bot){
+
+    if (!config.skip_bot) {
         config.skip_bot = false;
     }
 
@@ -20,13 +22,13 @@ module.exports = function(config) {
         sessionIds = {};
 
     middleware.receive = function(bot, message, next) {
-        if(config.skip_bot === true && message.bot_id !== undefined) {
-          next()
+        if (config.skip_bot === true && message.bot_id !== undefined) {
+          next();
         }
         else if (message.text) {
             var channel = message.channel;
 
-            if (!(channel in sessionIds)){
+            if (!(channel in sessionIds)) {
                 sessionIds[channel] = uuid.v1();
             }
 
